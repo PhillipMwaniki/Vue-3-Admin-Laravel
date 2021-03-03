@@ -1,7 +1,7 @@
 <template>
 	<div class="text-center">
 		<main class="form-signin">
-			<form>
+			<form @submit.prevent="submit">
 				<h1 class="h3 mb-3 fw-normal">Register</h1>
 				<label for="first_name" class="visually-hidden">First Name</label>
 				<input
@@ -10,6 +10,7 @@
 					class="form-control"
 					placeholder="First Name"
 					required
+					v-model="firstName"
 				/>
 				<label for="last_name" class="visually-hidden">Last Name</label>
 				<input
@@ -18,6 +19,7 @@
 					class="form-control"
 					placeholder="Last Name"
 					required
+					v-model="lastName"
 				/>
 				<label for="email" class="visually-hidden">Email Address</label>
 				<input
@@ -26,6 +28,7 @@
 					class="form-control"
 					placeholder="Email Address"
 					required
+					v-model="email"
 				/>
 				<label for="password" class="visually-hidden">Password</label>
 				<input
@@ -34,6 +37,7 @@
 					class="form-control"
 					placeholder="Password"
 					required
+					v-model="password"
 				/>
 				<label for="password_confirm" class="visually-hidden"
 					>Confirm Password</label
@@ -44,6 +48,7 @@
 					class="form-control"
 					placeholder="Confirm Password"
 					required
+					v-model="passwordConfirm"
 				/>
 				<button class="w-100 btn btn-lg btn-primary" type="submit">
 					Register
@@ -54,8 +59,39 @@
 </template>
 
 <script>
+import { ref } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
 export default {
-	name: 'Register'
+	name: 'Register',
+	setup() {
+		const firstName = ref('');
+		const lastName = ref('');
+		const email = ref('');
+		const password = ref('');
+		const passwordConfirm = ref('');
+		const router = useRouter();
+
+		const submit = async () => {
+			const response = await axios.post('http://localhost:8000/api/register', {
+				first_name: firstName.value,
+				last_name: lastName.value,
+				email: email.value,
+				password: password.value,
+				password_confirm: passwordConfirm.value,
+			});
+			await router.push('/login');
+		};
+
+		return {
+			firstName,
+			lastName,
+			email,
+			password,
+			passwordConfirm,
+			submit
+		};
+	}
 }
 </script>
 
