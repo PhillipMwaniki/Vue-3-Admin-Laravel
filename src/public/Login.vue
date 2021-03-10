@@ -1,7 +1,7 @@
 <template>
 	<div class="text-center">
 		<main class="form-signin">
-			<form>
+			<form @submit.prevent="submit">
 				<h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 				<label for="inputEmail" class="visually-hidden">Email address</label>
 				<input
@@ -11,6 +11,7 @@
 					placeholder="Email address"
 					required
 					autofocus
+					v-model="email"
 				/>
 				<label for="inputPassword" class="visually-hidden">Password</label>
 				<input
@@ -19,6 +20,7 @@
 					class="form-control"
 					placeholder="Password"
 					required
+					v-model="password"
 				/>
 				<div class="checkbox mb-3">
 					<label>
@@ -34,8 +36,33 @@
 </template>
 
 <script>
+import { ref } from "vue";
+import axios from 'axios';
+import {useRouter} from "vue-router";
 export default {
-	name: 'Register'
+	name: 'Login',
+  setup: function () {
+    const email = ref('');
+    const password = ref('');
+    const router = useRouter();
+
+    const submit = async () => {
+      const response = await axios.post('login', {
+        email: email.value,
+        password: password.value
+      });
+
+      localStorage.setItem('token', response.data.token);
+
+      await router.push('/');
+    }
+
+    return {
+      email,
+      password,
+      submit
+    }
+  }
 }
 </script>
 
