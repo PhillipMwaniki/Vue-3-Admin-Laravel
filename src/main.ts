@@ -10,12 +10,11 @@ import store from './store'
 // import bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+const token = localStorage.getItem('token');
 axios.defaults.baseURL = 'http://localhost:8000/api/';
-axios.defaults.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+axios.defaults.headers['Authorization'] = `Bearer ${token}`;
 
 const app = createApp(App);
-
-
 
 app.use(store)
 app.use(router)
