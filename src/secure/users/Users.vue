@@ -52,6 +52,8 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 import axios from "axios";
+
+import { User } from "@/classes/user";
 export default defineComponent({
 	name: "Users",
 	setup() {
@@ -79,7 +81,7 @@ export default defineComponent({
 		const del = async (id: number) => {
 			if (confirm("Are you sure want to delete this record ?")) {
 				await axios.delete(`users/${id}`);
-				users.value = users.value.filter((u: { id: number }) => u.id !== id);
+				users.value = users.value.filter((u: User) => u.id !== id);
 			}
 		};
 
